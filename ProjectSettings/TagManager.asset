@@ -7,6 +7,7 @@ TagManager:
   - DeathZone
   - ShortTile
   - Effect
+  - Destination
   layers:
   - Default
   - TransparentFX

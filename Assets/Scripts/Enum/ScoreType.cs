@@ -2,5 +2,6 @@ public enum ScoreType
 {
     Perfect,
     Great,
-    Cool
+    Cool,
+    Miss
 }

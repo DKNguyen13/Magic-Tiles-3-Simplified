@@ -11,10 +11,15 @@ public class DeathZone : MonoBehaviour
             ShortTile tile = collision.GetComponent<ShortTile>();
             if (tile != null && tile.IsTapped)
             {
+                if (collision.CompareTag("Destination"))
+                {
+                    tile.ResetTile();
+                }
                 return;
             }
             Debug.Log("Death zone");
             GameController.Instance.GameOver();
         }
+
     }
 }

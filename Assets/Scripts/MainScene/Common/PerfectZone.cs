@@ -16,6 +16,7 @@ public class PerfectZone : MonoBehaviour
         zoneAnimator = GetComponent<Animator>();
     }
 
+    //Cap nhat vi tri perfect zone
     public void UpdatePosition(Vector2 tapPosition, bool triggerAnimation)
     {
         Vector3 currentPosition = transform.position;
@@ -29,6 +30,7 @@ public class PerfectZone : MonoBehaviour
         }
     }
 
+    //Tra ve score type cho system combo
     public ScoreType CalculateScore(float tapY)
     {
         float distance = Mathf.Abs(tapY - currentPosY);

@@ -1,47 +1,23 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class ShortTile : MonoBehaviour
+public class ShortTile : TileBase
 {
-    //Speed
-    private float fallSpeed;
-    private float baseSpeed = 5f;
-
-    //BMP and time
-    private float bpm = 144f;
-    private float demoTime = 7f;
-    private Animator animator;
-    private float spawnTime;
-
-    //Perfect zone
-    [SerializeField] private PerfectZone perfectZone;
-
-    //Effect score type
-    [SerializeField] private ParticleSystem perfectEffect;
-    [SerializeField] private ParticleSystem goodEffect;
-
-    //Check tapped
-    private bool isTapped = false;
-
-    //Side left/right
-    private bool isLeftSide;
-
-    private void Awake()
+    protected override void Start()
     {
-        animator = GetComponent<Animator>();
+        bpm = 144f;
+        demoTime = 7f;
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
         if (!isTapped)
         {
             Vector2? tapPos = GetTapPositionIfTapped();
             if (tapPos.HasValue)
             {
-                if (GameController.Instance.IsFirstTile(this.gameObject, IsLeftSide)) ;
+                if (GameController.Instance.IsFirstTile(this.gameObject, IsLeftSide))
                 {
                     isTapped = true;
                     GameController.Instance.RemoveFirstTile(IsLeftSide);
@@ -57,11 +33,25 @@ public class ShortTile : MonoBehaviour
         fallSpeed = baseSpeed * (bpm / 60f);
 
         if (Time.timeSinceLevelLoad < demoTime)
+        {
             fallSpeed *= 0.3f;
+        }
         else if (Time.timeSinceLevelLoad >= demoTime && Time.timeSinceLevelLoad < 60f)
+        {
             fallSpeed *= 0.5f;
-        else
+        }
+        else if (Time.timeSinceLevelLoad >= 60f && Time.timeSinceLevelLoad < 100f)
+        {
+            fallSpeed *= 0.7f;
+        }
+        else if (Time.timeSinceLevelLoad >= 100f && Time.timeSinceLevelLoad < 114f)
+        {
+            fallSpeed *= 0.4f;//Sau 1:40s thi tiet tau nhac giam
+        }
+        else // 1:54s thi nhanh lai
+        {
             fallSpeed *= 0.8f;
+        }
 
         //Debug.Log("Fall speed : " + fallSpeed);
         transform.Translate(Vector3.down * fallSpeed * Time.deltaTime);//Lien tuc roi xuong
@@ -73,9 +63,18 @@ public class ShortTile : MonoBehaviour
         {
             animator.Play("tapped");
             GameController.Instance.OnTileDestroyed(tapY);
-            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length - 0.2f);
+            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         }
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        TilePoolManager.Instance.ReturnTileToPool(this.gameObject);
+    }
+
+    public override void ResetTile()
+    {
+        isTapped = false;
+        transform.position = Vector3.zero;
+        //animator.Play("idle");
+        gameObject.SetActive(false);
     }
 
     public Vector2? GetTapPositionIfTapped()
@@ -104,7 +103,8 @@ public class ShortTile : MonoBehaviour
         return null;
     }
 
-    public bool IsTapped {  get { return isTapped; } }
+    //Getter, setter
+    public bool IsTapped { get => isTapped; set => isTapped = value; }
     public float SpawnTime { set => spawnTime = value; }
     public bool IsLeftSide { get => isLeftSide; set => isLeftSide = value;}
 }
