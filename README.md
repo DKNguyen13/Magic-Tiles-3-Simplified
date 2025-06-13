@@ -49,3 +49,12 @@ Một prototype game nhịp điệu đơn giản được xây dựng bằng Uni
 - ✅ Game Over logic khi tile rơi.
 - ✅ Hệ thống quản lý tile và reset khi chơi lại.
 - ✅ Hiển thị điểm số tổng.
+
+---
+
+## 🧠 External Assets & Attribution
+
+- **UI Icons**: Unity built-in assets, https://www.flaticon.com/, MEP Platform.
+- **Sound Effect / Background Music**: Cupid - Fifty Fifty [https://www.nhaccuatui.com/bai-hat/cupid-sped-up-twin-ver-lil-cc.nbYKzBLU1fTD.html], sound effect: youtube, https://pixabay.com/vi/
+
+---
